@@ -1,0 +1,58 @@
+{
+  "Id": {
+    "validation": {
+      "type": "string",
+      "pattern": "^[a-fA-F0-9]{24}$",
+      "isRequired": true
+    },
+    "documentField": "id",
+    "isRequired": true
+  },
+  "BoroughCode": {
+    "validation": {
+      "type": "string",
+      "allowedValues": ["MN", "BX", "BK", "QN", "SI"]
+    },
+    "documentField": "loc.boroughCode",
+    "isRequired": false
+  },
+  "Borough": {
+    "validation": {
+      "type": "string",
+      "allowedValues": [
+        "Manhattan",
+        "Bronx",
+        "Brooklyn",
+        "Queens",
+        "Staten Island"
+      ]
+    },
+    "dependency": {
+      "fieldName": "BoroughCode",
+      "mapping": {
+        "MN": "Manhattan",
+        "BX": "Bronx",
+        "BK": "Brooklyn",
+        "QN": "Queens",
+        "SI": "Staten Island"
+      }
+    },
+    "documentField": "loc.borough",
+    "isRequired": false
+  },
+  "Neighborhood": {
+    "documentField": "loc.neighborhood",
+    "isRequired": false
+  },
+  "PostalCode": {
+    "validation": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 5,
+      "allowNull": true,
+      "pattern": "^\\d{5}$"
+    },
+    "documentField": "loc.postalCode",
+    "isRequired": false
+  }
+}

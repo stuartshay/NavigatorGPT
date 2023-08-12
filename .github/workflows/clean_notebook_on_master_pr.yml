@@ -1,4 +1,4 @@
-name: Clean Jupyter Notebook Outputs for PRs to Master
+name: Clean Jupyter Notebook Outputs for PRs
 
 on:
   pull_request:
@@ -12,14 +12,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout PR branch with full history
+      - name: Checkout PR branch
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.head_ref }}
           fetch-depth: 0
 
-      - name: Fetch master branch
-        run: git fetch origin master:master
+      - name: Fetch master and develop branches
+        run: |
+          git fetch origin master:master
+          git fetch origin develop:develop
 
       - name: Setup Python
         uses: actions/setup-python@v2
@@ -33,10 +34,11 @@ jobs:
 
       - name: Clean Jupyter Notebook Outputs
         run: |
-          NOTEBOOKS=$(git diff --name-only master ${{ github.head_ref }} | grep "notebooks/.*.ipynb$")
+          NOTEBOOKS=$(git diff --name-only master develop | grep "notebooks/.*.ipynb$")
+          echo "Notebooks to process: $NOTEBOOKS"
           for NOTEBOOK in $NOTEBOOKS; do
-            jupyter nbconvert --to notebook --ClearOutputPreprocessor.enabled=True --inplace "$NOTEBOOK"
-            git add "$NOTEBOOK"
+              jupyter nbconvert --to notebook --ClearOutputPreprocessor.enabled=True --inplace "$NOTEBOOK"
+              git add "$NOTEBOOK"
           done
 
       - name: Commit changes

@@ -12,10 +12,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout PR branch
+      - name: Checkout PR branch with full history
         uses: actions/checkout@v2
         with:
           ref: ${{ github.head_ref }}
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v2
@@ -29,7 +30,7 @@ jobs:
 
       - name: Clean Jupyter Notebook Outputs
         run: |
-          NOTEBOOKS=$(git diff --name-only HEAD~1 HEAD | grep "notebooks/.*.ipynb$")
+          NOTEBOOKS=$(git diff --name-only ${{ github.base_ref }} ${{ github.head_ref }} | grep "notebooks/.*.ipynb$")
           for NOTEBOOK in $NOTEBOOKS; do
               jupyter nbconvert --to notebook --ClearOutputPreprocessor.enabled=True --inplace "$NOTEBOOK"
               git add "$NOTEBOOK"

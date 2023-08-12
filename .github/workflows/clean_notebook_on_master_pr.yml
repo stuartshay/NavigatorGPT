@@ -18,6 +18,9 @@ jobs:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
 
+      - name: Fetch master branch
+        run: git fetch origin master:master
+
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
@@ -30,10 +33,10 @@ jobs:
 
       - name: Clean Jupyter Notebook Outputs
         run: |
-          NOTEBOOKS=$(git diff --name-only ${{ github.base_ref }} ${{ github.head_ref }} | grep "notebooks/.*.ipynb$")
+          NOTEBOOKS=$(git diff --name-only master ${{ github.head_ref }} | grep "notebooks/.*.ipynb$")
           for NOTEBOOK in $NOTEBOOKS; do
-              jupyter nbconvert --to notebook --ClearOutputPreprocessor.enabled=True --inplace "$NOTEBOOK"
-              git add "$NOTEBOOK"
+            jupyter nbconvert --to notebook --ClearOutputPreprocessor.enabled=True --inplace "$NOTEBOOK"
+            git add "$NOTEBOOK"
           done
 
       - name: Commit changes

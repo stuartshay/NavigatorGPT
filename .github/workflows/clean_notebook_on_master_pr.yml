@@ -17,11 +17,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Fetch master and develop branches
-        run: |
-          git fetch origin master:master
-          git fetch origin develop:develop
-
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
@@ -34,11 +29,31 @@ jobs:
 
       - name: Clean Jupyter Notebook Outputs
         run: |
+          set -x  # Enable debugging
+
+          # Fetch the branches first to ensure they exist.
+          git fetch origin master:master
+          git fetch origin develop:develop
+
+          # Get the list of notebooks changed between master and develop.
           NOTEBOOKS=$(git diff --name-only master develop | grep "notebooks/.*.ipynb$")
+
           echo "Notebooks to process: $NOTEBOOKS"
+
+          # If there are no notebooks to process, exit.
+          if [ -z "$NOTEBOOKS" ]; then
+            echo "No notebooks were found for processing."
+            exit 0
+          fi
+
+          # For each notebook, clear the output.
           for NOTEBOOK in $NOTEBOOKS; do
-              jupyter nbconvert --to notebook --ClearOutputPreprocessor.enabled=True --inplace "$NOTEBOOK"
-              git add "$NOTEBOOK"
+              if [ -f "$NOTEBOOK" ]; then
+                  jupyter nbconvert --to notebook --ClearOutputPreprocessor.enabled=True --inplace "$NOTEBOOK"
+                  git add "$NOTEBOOK"
+              else
+                  echo "Warning: Expected notebook file $NOTEBOOK does not exist."
+              fi
           done
 
       - name: Commit changes

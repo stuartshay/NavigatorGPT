@@ -1,18 +1,34 @@
 let data = [
-{"id": "646434786117d262815b1080", "loc.boroughCode": "BX", "loc.neighborhood": "High Bridge", "loc.postalCode": 10452},
-{"id": "644cbfd73879cf70e53ff026", "loc.boroughCode": "MN", "loc.neighborhood": "Lower East Side", "loc.postalCode": 10038},
-{"id": "6464352a6117d262815b1081", "loc.boroughCode": "BX", "loc.neighborhood": "High Bridge", "loc.postalCode": 10452},
-{"id": "646432196117d262815b107d", "loc.boroughCode": "BX", "loc.neighborhood": "High Bridge", "loc.postalCode": 10452},
-{"id": "552a10ca912913b260eb7615", "loc.boroughCode": "BK", "loc.neighborhood": "Prospect Heights", "loc.postalCode": 11238},
-{"id": "5536fc22083cd88a44265c33", "loc.boroughCode": "BK", "loc.neighborhood": "Fort Green", "loc.postalCode": 11216},
-{"id": "646c1a8b9e866c1d68eb57b1", "loc.boroughCode": "MN", "loc.neighborhood": "Lower East Side", "loc.postalCode": 10002},
-{"id": "646c2ba39e866c1d68eb57bc", "loc.boroughCode": "MN", "loc.neighborhood": "Lower East Side", "loc.postalCode": 10038},
-{"id": "5541973b083cd88a44265cf6", "loc.boroughCode": "MN", "loc.neighborhood": "Midtown", "loc.postalCode": 10019},
-{"id": "646c28aa9e866c1d68eb57b7", "loc.boroughCode": "MN", "loc.neighborhood": "Lower East Side", "loc.postalCode": 10002},
-{"id": "646c307f9e866c1d68eb57c0", "loc.boroughCode": "MN", "loc.neighborhood": "Lower East Side", "loc.postalCode": 10002},
-{"id": "646c2b099e866c1d68eb57bb", "loc.boroughCode": "MN", "loc.neighborhood": "Lower East Side", "loc.postalCode": 10002},
-{"id": "644cc0b53879cf70e53ff027", "loc.boroughCode": "MN", "loc.neighborhood": "Lower East Side", "loc.postalCode": 10002},
-{"id": "646c311c9e866c1d68eb57c1", "loc.boroughCode": "MN", "loc.neighborhood": "Lower East Side", "loc.postalCode": 10002},
+{"id": "646434786117d262815b1080", "loc.boroughCode": "BX", "loc.neighborhood": "High Bridge", "loc.postalCode": "10452"},
+{"id": "644cbfd73879cf70e53ff026", "loc.boroughCode": "MN", "loc.neighborhood": "Lower East Side", "loc.postalCode": "10038"},
+{"id": "6464352a6117d262815b1081", "loc.boroughCode": "BX", "loc.neighborhood": "High Bridge", "loc.postalCode": "10452"},
+
+
+
+
+
+{"id": "646432196117d262815b107d", "loc.boroughCode": "BX", "loc.neighborhood": "High Bridge", "loc.postalCode": "10452"},
+{"id": "552a10ca912913b260eb7615", "loc.boroughCode": "BK", "loc.neighborhood": "Prospect Heights", "loc.postalCode": "11238"},
+{"id": "5536fc22083cd88a44265c33", "loc.boroughCode": "BK", "loc.neighborhood": "Fort Green", "loc.postalCode": "11216"},
+
+
+
+
+{"id": "646c1a8b9e866c1d68eb57b1", "loc.boroughCode": "MN", "loc.neighborhood": "Lower East Side", "loc.postalCode": "10002"},
+{"id": "646c2ba39e866c1d68eb57bc", "loc.boroughCode": "MN", "loc.neighborhood": "Lower East Side", "loc.postalCode": "10038"},
+{"id": "5541973b083cd88a44265cf6", "loc.boroughCode": "MN", "loc.neighborhood": "Midtown", "loc.postalCode": "10019"},
+{"id": "646c28aa9e866c1d68eb57b7", "loc.boroughCode": "MN", "loc.neighborhood": "Lower East Side", "loc.postalCode": "10002"},
+{"id": "646c307f9e866c1d68eb57c0", "loc.boroughCode": "MN", "loc.neighborhood": "Lower East Side", "loc.postalCode": "10002"},
+{"id": "646c2b099e866c1d68eb57bb", "loc.boroughCode": "MN", "loc.neighborhood": "Lower East Side", "loc.postalCode": "10002"},
+{"id": "644cc0b53879cf70e53ff027", "loc.boroughCode": "MN", "loc.neighborhood": "Lower East Side", "loc.postalCode": "10002"},
+{"id": "646c311c9e866c1d68eb57c1", "loc.boroughCode": "MN", "loc.neighborhood": "Lower East Side", "loc.postalCode": "10002"},
+
+
+
+
+
+
+
 {"id": "5539c291083cd88a44265c89", "loc.boroughCode": "MN", "loc.neighborhood": "Midtown", "loc.postalCode": 10111},
 {"id": "5570f91f8a3638298ddf2e7d", "loc.boroughCode": "MN", "loc.neighborhood": "Midtown", "loc.postalCode": 10112},
 {"id": "5570fa9f8a3638298ddf2e7e", "loc.boroughCode": "MN", "loc.neighborhood": "Midtown", "loc.postalCode": 10112},

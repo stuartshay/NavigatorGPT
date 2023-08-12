@@ -38,10 +38,12 @@ jobs:
           # Get the list of notebooks changed between master and develop.
           NOTEBOOKS=$(git diff --name-only master develop | grep "notebooks/.*.ipynb$")
 
-          # If there are no notebooks to process, exit.
+          # If there are no notebooks to process, exit with success.
           if [ -z "$NOTEBOOKS" ]; then
             echo "No notebooks were found for processing."
             exit 0
+          else
+            echo "Found notebooks: $NOTEBOOKS"
           fi
 
           echo "Notebooks to process: $NOTEBOOKS"

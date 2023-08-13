@@ -1,4 +1,8 @@
 import sys
+sys.path.append('./scripts')  # Add the path to your script folder
+from data_validation import check_file_presence
+
+
 sys.path.append('path_to_your_script_folder')  # Add the path to your script folder if it's not already in sys.path
 
 from data_validation import check_file_presence  # Adjust the import based on your script's structure

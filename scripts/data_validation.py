@@ -19,7 +19,38 @@ def check_file_presence(required_files, optional_files=[]):
     ...
 
 def validate_excel_data_types(excel_path):
-    # Validates data types of key columns in the Excel file
+    """
+    Validates data types of key columns in the Excel file.
+
+    Parameters:
+        - excel_path (str): Path to the Excel file.
+
+    Returns:
+        - dict: A dictionary with column names as keys and validation results as values.
+    """
+
+    # Define expected data types for key columns
+    expected_data_types = {
+        'ColumnName1': 'int64',     # Replace with your actual column name
+        'ColumnName2': 'float64',
+        'ColumnName3': 'string'    # Using 'string' dtype for textual data
+    }
+
+    # Load the Excel file into a DataFrame
+    df = pd.read_excel(excel_path)
+
+    # Dictionary to store validation results
+    validation_results = {}
+
+    # Iterate over the key columns and check data types
+    for column, expected_dtype in expected_data_types.items():
+        actual_dtype = df[column].dtype
+        if actual_dtype == expected_dtype:
+            validation_results[column] = "Valid"
+        else:
+            validation_results[column] = f"Invalid (Expected: {expected_dtype}, Found: {actual_dtype})"
+
+    return validation_results
     ...
 
 def validate_against_graphql_schema(data, schema_path):

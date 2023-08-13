@@ -1,6 +1,10 @@
 
-MongoDB Data Import Workflow Hint
+MongoDB Data Import Workflow
 =================================
+
+0. **Prerequisites**
+   - Python Libraries (pandas, openpyxl, json, re, datetime, uuid)
+   - Proper access permissions to read and write files.
 
 1. **Start Workflow**
    - Generate a unique Build ID.
@@ -13,11 +17,13 @@ MongoDB Data Import Workflow Hint
    - Hint File (Workflow guide)
 
 3. **Display Excel File Information**
+   - Check the Excel file has a .xlsx extension.
    - Display Columns in the Excel File
    - Display the document Mapping Fields for each column
    - Display the number of rows in the Excel file.
 
 4. **Excel File Validation**
+   - Only Map Columns that are defined in the Excel File to the mapping file and using the mappings as reference.
    - Validate that all columns in the Excel file are defined in the mapping file.
    - Validate that all columns in the Excel file are defined as properties anywhere in the GraphQL schema.
    - Check if the Excel file has any extra columns not defined in the mapping file or GraphQL schema.

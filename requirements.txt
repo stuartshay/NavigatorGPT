@@ -3,3 +3,4 @@ xlrd
 jupyter
 openai
 pymongo
+pytest

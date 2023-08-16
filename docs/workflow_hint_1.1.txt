@@ -1,0 +1,62 @@
+# MongoDB Data Import Workflow - Enhanced Version 1.1
+
+## Prerequisites:
+- Ensure you have the necessary Python libraries installed.
+- Ensure you have the necessary permissions to access MongoDB.
+- This workflow assumes familiarity with MongoDB, GraphQL, and basic data processing concepts.
+
+## Start Workflow:
+- Generate a unique Build ID.
+- Record the start timestamp.
+
+## Load Mandatory Provided Files:
+- Ensure the following files are present:
+  - GraphQL Schema Definition (e.g., Attraction.ql)
+  - Mapping File (e.g., Attraction.map)
+  - Excel Data (e.g., Location-Import.xlsx)
+  - This Workflow Guide (workflow_hint.txt)
+
+## Display Excel File Information:
+- Check if the Excel file has a .xlsx extension.
+- Display columns in the Excel file.
+- Map the document fields for each Excel column.
+- Display row count in the Excel file.
+
+## Excel File Validation:
+- Validate the data types of each column as specified.
+  - Example: Ensure PostalCode is a string, even if it looks like a number.
+- Validate against the GraphQL schema and the mapping file.
+- Note any special rules or transformations.
+  - Example: If PostalCode starts with '0', ensure it's retained.
+- Check for extra columns not defined in the mapping file or GraphQL schema.
+
+## Data Processing:
+- Process the data according to the mapping file.
+- Apply any transformations or rules defined in the hint file.
+  - Example: Convert certain fields to uppercase.
+
+## Output Results:
+- Generate a JavaScript array based on the processed data and the provided template.
+- Ensure the output matches the desired format.
+- Provide a link for downloading the processed data.
+
+## End Workflow:
+- Record the end timestamp.
+- Display the total time taken.
+
+## Error Handling:
+- If you encounter errors, refer to the troubleshooting section below.
+- For specific issues, contact [support@example.com] or refer to our FAQ.
+
+## Troubleshooting:
+- Ensure all mandatory files are present.
+- Check if the Excel data conforms to the expected format.
+- If certain rows are causing issues, try isolating them for individual processing.
+
+## Versioning:
+- This is version 1.1 of the workflow hint.
+- For previous versions or to see a changelog, visit [our documentation portal].
+
+## Glossary:
+- GraphQL: A query language for APIs.
+- Mapping File: A file that defines how Excel columns map to MongoDB fields.

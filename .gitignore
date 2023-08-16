@@ -1,0 +1,29 @@
+
+# Python related
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+*.egg
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Data files
+data/processed/*  # Assuming you want to ignore processed data
+
+# Environment related
+*.env
+*.venv
+*.conda
+*.virtualenv
+
+# System related
+.DS_Store
+Thumbs.db
+
+# IDE related
+.vscode/
+.idea/
+*.swp
+*.swo

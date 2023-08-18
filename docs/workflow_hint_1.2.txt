@@ -1,4 +1,4 @@
-# MongoDB Data Import Workflow - Enhanced Version 1.1
+# MongoDB Data Import Workflow - Enhanced Version 1.2
 
 ## Prerequisites:
 - Ensure you have the necessary Python libraries installed.
@@ -22,14 +22,16 @@
 - Map the document fields for each Excel column.
 - Display row count in the Excel file.
 
+
 ## Excel File Validation:
-- Validate that all columns in the Excel file are defined in the mapping file..
+- Validate that all columns in the Excel file are defined in the mapping file.
 - Validate that all columns in the Excel file are defined as properties anywhere in the GraphQL schema.
 - Check if the Excel file has any extra columns not defined in the mapping file or GraphQL schema.
-- Transform or Parse Excel Data into data types define in the GraphQL schema and/or mapping file.
-  - Example: PostalCode can be defined as interger in the Excel File, Covert the PostalCode to string as defined in the GraphQL schema and mapping file.
-
-
+- Transform or Parse Excel Data into data types defined in the GraphQL schema and/or mapping file.
+  - Example: PostalCode can be defined as integer in the Excel File. Convert the PostalCode to string as defined in the GraphQL schema and mapping file.
+  - Emphasize the importance of data type transformations, especially when there are discrepancies between the Excel data and the GraphQL schema.
+- Ensure error messages are clear and specific. For instance, if there's a data type mismatch for a column, the error message should highlight this discrepancy.
+- It's essential to have a robust codebase that not only follows these instructions but is also capable of handling unexpected scenarios and providing feedback or error messages when discrepancies arise.
 ## Data Processing:
 - Process the data according to the mapping file.
 - Apply any transformations or rules defined in the hint file.

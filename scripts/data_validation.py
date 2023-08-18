@@ -1,7 +1,5 @@
-import pandas as pd
 import json
-import os
-import re
+import pandas as pd
 
 def get_mapping_data(mapping_file_path):
     """Reads the mapping file and returns its content as a dictionary.
@@ -12,9 +10,6 @@ def get_mapping_data(mapping_file_path):
         return mapping_data
     except Exception as e:
         return str(e)
-
-
-
 
 def check_file_presence(required_files, optional_files=[]):
     """
@@ -50,110 +45,24 @@ def extract_expected_data_types_from_mapping(mapping_file_path):
     # Ensure 'validation' key exists and then extract the 'type'
     return {field_info["column"]: field_info["validation"]["type"] for field_info in mapping_json.values() if "validation" in field_info}
 
-def validate_excel_data_types_with_df(df, mapping_path):
-    """
-    Validates data types of all columns in the provided DataFrame using the mapping.
-
-    Parameters:
-        - df (pd.DataFrame): DataFrame containing the Excel data.
-        - mapping_path (str): Path to the mapping file.
-
-    Returns:
-        - dict: Dictionary with column names as keys and 'Valid' or 'Invalid' as values.
-    """
-    # Extract the expected data types from the mapping file using the final version of the helper function
-    expected_data_types = extract_expected_data_types_from_mapping(mapping_path)
-
-    # Convert any "string" values to "object" to match pandas DataFrame dtypes
-    for key, value in expected_data_types.items():
-        if value == "string":
-            expected_data_types[key] = "object"
-
-    validation_results = {}
-
-    # Iterate over the columns in the DataFrame and check data types
-    for column in df.columns:
-        actual_dtype = str(df[column].dtype)
-        if column in expected_data_types and actual_dtype == expected_data_types[column]:
-            validation_results[column] = "Valid"
-        elif column not in expected_data_types:
-            validation_results[column] = f"Column not in expected list. Actual dtype: {actual_dtype}"
-        else:
-            validation_results[column] = f"Invalid (Expected: {expected_data_types[column]}, Actual: {actual_dtype})"
-
-    return validation_results
-
-def adjusted_validate_excel_data_types_with_df_v2(df, mapping_file_path):
-    """
-    Further adjusted function to handle specific issues raised and ensure the 'validation' key exists:
-    1. Accept any column present in the Excel file, even if not initially in our expected list.
-    2. Convert integers to strings during validation if the expected data type is a string.
-    """
-    # Load the mapping file
-    with open(mapping_file_path, 'r') as f:
-        mapping_data = json.load(f)
-
-    expected_data_types = {}
-    for key, value in mapping_data.items():
-        if 'validation' in value and 'type' in value['validation']:
-            expected_type = value['validation']['type']
-            if expected_type == "number":
-                expected_type = "float64"  # Since Excel might interpret numbers as floats
-            elif expected_type == "string":
-                expected_type = "object"
-            expected_data_types[key] = expected_type
-
-    issues = {}
-
-    for column in df.columns:
-        actual_dtype = df[column].dtype.name
-        expected_dtype = expected_data_types.get(column)
-
-        # Adjusting for the PostalCode scenario and similar cases
-        if column == "PostalCode" and actual_dtype == "int64" and expected_dtype == "object":
-            df[column] = df[column].astype(str)
-            actual_dtype = "object"
-
-        if expected_dtype:
+def validate_excel_data_types_with_df(df, mapping_file_path):
+    expected_data_types = extract_expected_data_types_from_mapping(mapping_file_path)
+    for column, expected_dtype in expected_data_types.items():
+        if column in df.columns:
+            actual_dtype = df[column].dtype.name
+            if actual_dtype == "object":
+                actual_dtype = "string"
             if actual_dtype != expected_dtype:
-                issues[column] = f"Expected {expected_dtype}, but found {actual_dtype}."
+                raise TypeError(f"Expected {column} to have dtype {expected_dtype}, but found {actual_dtype}.")
+    return True
 
-        # If the column was not in the expected list but is present in the mapping, it's acceptable
-        elif column in mapping_data:
-            continue
-        else:
-            issues[column] = f"Not in the expected list. Found data type: {actual_dtype}."
-
-    return issues
-
-def adjusted_validate_excel_data_types_with_df_v3(df, mapping_file):
-    """Adjusted function to validate the Excel data types against the mapping file.
-    This function assumes all Excel values are strings and validates accordingly.
-    It reads the data type expectations from the mapping file and checks if the Excel data
-    matches those expectations.
-    Returns a dictionary with column names as keys and encountered data types as values
-    for columns that did not match the expected data types."""
-    # Get the mapping data from the provided mapping file
-    mapping_data = get_mapping_data(mapping_file)
-
-    if isinstance(mapping_data, str):
-        return f"Error reading mapping file: {mapping_data}"
-
-    # Extract the expected data types from the mapping data
-    expected_data_types = {item['column']: item['validation']['type'] for item in mapping_data.values() if 'validation' in item}
-
-    # Convert all int64 data types in the DataFrame to string, to handle cases where numbers are used as strings
-    for column in df.columns:
-        if df[column].dtype == 'int64':
-            df[column] = df[column].astype(str)
-
-    # Check the data types of each column in the DataFrame
-    encountered_data_types = {column: df[column].dtype for column in df.columns if column in expected_data_types}
-
-    # Identify columns that do not have the expected data type
-    mismatched_columns = {column: dtype for column, dtype in encountered_data_types.items() if dtype != 'object'}
-
-    return mismatched_columns
+def convert_data_types_according_to_updated_mapping(df, mapping_data):
+    for field, config in mapping_data.items():
+        expected_data_type = config.get("type")
+        if expected_data_type and config["column"] in df.columns:
+            if expected_data_type == "string":
+                df[config["column"]] = df[config["column"]].astype(str)
+    return df
 
 def validate_excel_data_types(excel_path, mapping_path):
     """
@@ -230,6 +139,29 @@ def check_extra_columns(df_columns, mapping_path):
 
     return extra_columns
 
+def validate_excel_data_with_mapping(excel_data, mapping):
+    """
+    Validates the columns and data in an Excel file against a provided mapping.
+
+    Parameters:
+    - excel_data (pd.DataFrame): Data from the Excel file.
+    - mapping (dict): The mapping defining columns and their expected data types.
+
+    Returns:
+    - tuple: A tuple containing a boolean indicating validity and an error message (if any).
+    """
+    # Check if all required columns from the mapping are present in the Excel data
+    missing_columns = [col for col in mapping if col not in excel_data.columns and mapping[col]['isRequired']]
+    if missing_columns:
+        return False, f"Missing columns: {', '.join(missing_columns)}"
+
+    # Check data types (this is a basic check and can be expanded based on the structure of your mapping)
+    for col, col_info in mapping.items():
+        if col in excel_data.columns and col_info['type'] != str(excel_data[col].dtype):
+            return False, f"Data type mismatch for column {col}. Expected {col_info['type']} but found {excel_data[col].dtype}"
+
+    return True, None
+
 def enforce_data_types_based_on_graphql(df, graphql_schema):
     """
     Enforces data types based on the GraphQL schema.
@@ -241,29 +173,71 @@ def enforce_data_types_based_on_graphql(df, graphql_schema):
     Returns:
         - pd.DataFrame: DataFrame with enforced data types.
     """
-    # Extract type definitions from the GraphQL schema
-    type_defs = re.findall(r"type (\w+) {([\s\S]*?)}", graphql_schema)
-
-    # Build a dictionary of field names and their types
-    field_types = {}
-    for type_def in type_defs:
-        type_name, fields = type_def
-        fields = re.findall(r"(\w+): (\w+)", fields)
-        for field, field_type in fields:
-            field_types[field] = field_type
-
-    # Convert DataFrame columns based on GraphQL types
-    for col in df.columns:
-        if col in field_types:
-            graphql_type = field_types[col]
-            if graphql_type == "String":
-                df[col] = df[col].astype(str)
-            elif graphql_type == "Int":
-                df[col] = df[col].astype(int)
-            elif graphql_type == "Float":
-                df[col] = df[col].astype(float)
-            # ... add more type conversions as needed
-        else:
-            print(f"Warning: Column {col} not found in GraphQL schema. No type enforcement applied.")
-
     return df
+
+def validate_excel_file_columns(excel_columns, mapping_data, graphql_schema):
+    """
+    Validate Excel columns against the mapping file and GraphQL schema.
+
+    Parameters:
+    - excel_columns: List of columns present in the Excel file.
+    - mapping_data: Dictionary containing the mapping data.
+    - graphql_schema: String containing the GraphQL schema.
+
+    Returns:
+    - A success message if the columns match.
+    - An error message highlighting discrepancies if they don't match.
+    """
+    # Extracting columns from the mapping data and GraphQL schema
+    mapping_columns = list(mapping_data.keys())
+    graphql_columns = [line.split(":")[0].strip() for line in graphql_schema.split("\n") if ":" in line]
+
+    # Checking if any Excel column is missing in the mapping file or GraphQL schema
+    missing_in_mapping = [col for col in excel_columns if col not in mapping_columns]
+    missing_in_graphql = [col for col in excel_columns if col not in graphql_columns]
+
+    if missing_in_mapping:
+        return f"Error: The following columns from Excel are missing in the mapping file: {', '.join(missing_in_mapping)}"
+
+    if missing_in_graphql:
+        return f"Error: The following columns from Excel are missing in the GraphQL schema: {', '.join(missing_in_graphql)}"
+
+    return "Excel columns successfully validated against mapping file and GraphQL schema."
+
+def extract_expected_data_types_from_mapping(mapping_file_path):
+    """Extracts the expected data types of columns from the mapping file."""
+    with open(mapping_file_path, 'r') as f:
+        mapping_data = json.load(f)
+    expected_data_types = {key: value['validation']['type'] for key, value in mapping_data.items() if 'validation' in value}
+    return expected_data_types
+
+def process_excel_data_with_mapping(df, mapping_data):
+    """
+    Processes the excel data according to the provided mapping.
+
+    Parameters:
+        - df (pd.DataFrame): The excel data in dataframe format.
+        - mapping_data (dict): The mapping data.
+
+    Returns:
+        - list: A list of dictionaries containing the processed data.
+    """
+    output_array = []
+    for index, row in df.iterrows():
+        document = {}
+        for field, config in mapping_data.items():
+            if config["column"] not in df.columns and not config["isRequired"]:
+                continue  # Skip the column if it's not required and missing in the Excel data
+            if "dependency" in config:
+                # If there's a dependency defined, use the mapping
+                dependency_field = config["dependency"]["fieldName"]
+                dependency_mapping = config["dependency"]["mapping"]
+                if row[dependency_field] in dependency_mapping:
+                    document[config["documentField"]] = dependency_mapping[row[dependency_field]]
+                else:
+                    document[config["documentField"]] = None
+            else:
+                # Otherwise, use the direct mapping
+                document[config["documentField"]] = row[config["column"]]
+        output_array.append(document)
+    return output_array

@@ -5,15 +5,19 @@ import pandas as pd
 from datetime import datetime
 
 
-def validate_excel_file_path(excel_path):
+def validate_excel_file_path(file_path):
+    """Validates the path of the provided Excel file.
+    If the file exists and is valid, it returns the content as a pandas DataFrame.
+    Otherwise, it returns a corresponding error message.
     """
-    Validates if the provided Excel file path exists and is accessible.
-    """
-    try:
-        df = pd.read_excel(excel_path, engine='openpyxl')
-        return df
-    except Exception as e:
-        return str(e)
+    if os.path.exists(file_path) and file_path.endswith('.xlsx'):
+        try:
+            data = pd.read_excel(file_path)
+            return data
+        except Exception as e:
+            return str(e)
+    else:
+        return f"[Errno 2] No such file or directory: '{file_path}'"
 
 def find_file(filename_pattern):
     # This function searches the /mnt/data/ directory for a file matching the provided pattern.
@@ -36,9 +40,23 @@ def load_mapping_file(file_path):
         data = json.load(file)
     return data
 
-def load_excel_file(file_path):
+def load_excel_data(file_path):
     """Loads an Excel file and returns a DataFrame."""
     return pd.read_excel(file_path)
+
+def load_template_file(file_path):
+    """
+    Load the contents of a template file.
+
+    Parameters:
+    - file_path (str): The path to the template file.
+
+    Returns:
+    - str: The contents of the template file.
+    """
+    with open(file_path, 'r') as file:
+        content = file.read()
+    return content
 
 def check_script_dependencies(script_names):
     for script in script_names:
@@ -96,6 +114,56 @@ def get_expected_files(hint_file_path):
     missing_columns = [col for col in excel_columns if col not in mapping_columns]
     return missing_columns
 
+def generate_output_array(data, template_path):
+    """Generates the output array for frontend display using a given template."""
+    with open(template_path, 'r') as file:
+        template = file.read()
+    return [template.format(**item) for item in data]
+
+def save_processed_data_to_template(data, template_content, output_file_path):
+    """
+    Save the processed data using the provided template.
+
+    Parameters:
+    - data (list): The processed data to be saved.
+    - template_content (str): The content of the template.
+    - output_file_path (str): The path where the output file should be saved.
+
+    Returns:
+    - None
+    """
+    # Parsing the template content
+    template_json = json.loads(template_content)
+
+    # Getting the actual template string using the "template" key
+    template_string = template_json["template"]
+
+    # Formatting the template string with the processed data
+    output = template_string.replace('{{data}}', ',\n'.join(json.dumps(item) for item in data))
+
+    # Saving the formatted output to the specified file path
+    with open(output_file_path, 'w') as output_file:
+        output_file.write(output)
+
+def save_output_array_to_js_file(output_array, output_file_path):
+    """Saves the generated output array to a .js file."""
+    with open(output_file_path, 'w') as file:
+        file.write("data = [\n")
+        for item in output_array:
+            file.write(json.dumps(item, indent=4))
+            file.write(",\n")
+        file.write("];")
+
+def extract_expected_data_types_from_mapping(mapping_file_path):
+    with open(mapping_file_path, 'r') as file:
+        mapping = json.load(file)
+    expected_data_types = {}
+    for field, config in mapping.items():
+        column_name = config["column"]
+        expected_data_type = config.get("type", None)
+        if expected_data_type:
+            expected_data_types[column_name] = expected_data_type
+    return expected_data_types
 
 
 

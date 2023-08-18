@@ -1,4 +1,4 @@
-# MongoDB Data Import Workflow - Enhanced Version 1.1
+# MongoDB Data Import Workflow - Enhanced Version 1.32
 
 ## Prerequisites:
 - Ensure you have the necessary Python libraries installed.
@@ -10,11 +10,13 @@
 - Record the start timestamp.
 
 ## Load Mandatory Provided Files:
-- Ensure the following files are present:
-  - GraphQL Schema Definition (e.g., Attraction.ql)
-  - Mapping File (e.g., Attraction.map)
-  - Excel Data (e.g., Location-Import.xlsx)
-  - This Workflow Guide (workflow_hint.txt)
+- Ensure the following files are present.
+  - Version the Excel File: When a file is uploaded, append the Build ID to the filename.
+  - GraphQL Schema Definition (e.g., Attraction.ql).
+  - Mapping File (e.g., Attraction.map).
+  - Excel Data (e.g., Location-Import_{Build ID}.xlsx).
+  - This Workflow Guide (workflow_hint_{version}.txt).
+  - Display the Excel File with the new File Name.
 
 ## Display Excel File Information:
 - Check if the Excel file has a .xlsx extension.
@@ -23,12 +25,15 @@
 - Display row count in the Excel file.
 
 ## Excel File Validation:
-- Validate that all columns in the Excel file are defined in the mapping file..
+- Validate that all columns in the Excel file are defined in the mapping file.
+- Validate columns based on the "isRequired" flag in the mapping file (See Glossary).
 - Validate that all columns in the Excel file are defined as properties anywhere in the GraphQL schema.
 - Check if the Excel file has any extra columns not defined in the mapping file or GraphQL schema.
-- Transform or Parse Excel Data into data types define in the GraphQL schema and/or mapping file.
-  - Example: PostalCode can be defined as interger in the Excel File, Covert the PostalCode to string as defined in the GraphQL schema and mapping file.
-
+- Transform or Parse Excel Data into data types defined in the GraphQL schema and/or mapping file.
+  - Example: PostalCode can be defined as integer in the Excel File. Convert the PostalCode to string as defined in the mapping file.
+  - Emphasize the importance of data type transformations, especially when there are discrepancies between the Excel data and the GraphQL schema.
+- Ensure error messages are clear and specific. For instance, if there's a data type mismatch for a column, the error message should highlight this discrepancy.
+- It's essential to have a robust codebase that not only follows these instructions but is also capable of handling unexpected scenarios and providing feedback or error messages when discrepancies arise.
 
 ## Data Processing:
 - Process the data according to the mapping file.
@@ -44,6 +49,9 @@
 - Record the end timestamp.
 - Display the total time taken.
 
+## Clean up
+ - Remove the provided Excel file to prevent using outdated or previous versions in future runs.
+
 ## Error Handling:
 - If you encounter errors, refer to the troubleshooting section below.
 - For specific issues, contact [support@example.com] or refer to our FAQ.
@@ -53,10 +61,10 @@
 - Check if the Excel data conforms to the expected format.
 - If certain rows are causing issues, try isolating them for individual processing.
 
-## Versioning:
-- This is version 1.1 of the workflow hint.
-- For previous versions or to see a changelog, visit [our documentation portal].
 
 ## Glossary:
 - GraphQL: A query language for APIs.
 - Mapping File: A file that defines how Excel columns map to MongoDB fields.
+- isRequired: A flag in the mapping file that indicates the necessity of a column in the Excel data.
+    "isRequired": true: Indicates that the column must be present in the Excel data.
+    "isRequired": false: Implies that the column can be safely ignored if it's missing from the Excel data.

@@ -1,8 +1,8 @@
 {
   "Id": {
     "column": "Id",
+    "type": "string",
     "validation": {
-      "type": "string",
       "pattern": "^[a-fA-F0-9]{24}$",
       "isRequired": true
     },
@@ -11,8 +11,8 @@
   },
   "BoroughCode": {
     "column": "BoroughCode",
+    "type": "string",
     "validation": {
-      "type": "string",
       "allowedValues": [
         "MN",
         "BX",
@@ -28,8 +28,8 @@
     "column": "Borough",
     "documentField": "loc.borough",
     "isRequired": false,
+    "type": "string",
     "validation": {
-      "type": "string",
       "allowedValues": [
         "Manhattan",
         "Bronx",
@@ -52,14 +52,21 @@
   "Neighborhood": {
     "column": "Neighborhood",
     "documentField": "loc.neighborhood",
+    "type": "string",
+    "isRequired": false
+  },
+  "City": {
+    "column": "City",
+    "documentField": "loc.city",
+    "type": "string",
     "isRequired": false
   },
   "PostalCode": {
     "column": "PostalCode",
     "documentField": "loc.postalCode",
     "isRequired": false,
+    "type": "string",
     "validation": {
-      "type": "string",
       "minLength": 5,
       "maxLength": 5,
       "allowNull": true,

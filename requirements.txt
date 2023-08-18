@@ -1,6 +1,8 @@
 pandas
+numpy
+openpyxl
 xlrd
-jupyter
-openai
+graphql
 pymongo
+bson
 pytest

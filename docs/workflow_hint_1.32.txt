@@ -13,7 +13,7 @@
 - Ensure the following files are present.
   - Version the Excel File: When a file is uploaded, append the Build ID to the filename.
   - GraphQL Schema Definition (e.g., Attraction.ql).
-  - Mapping File (e.g., Attraction.map).
+  - Mapping File (e.g., attration.json).
   - Excel Data (e.g., Location-Import_{Build ID}.xlsx).
   - This Workflow Guide (workflow_hint_{version}.txt).
   - Display the Excel File with the new File Name.

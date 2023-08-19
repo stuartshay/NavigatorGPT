@@ -28,33 +28,74 @@ def check_file_presence(required_files, optional_files=[]):
     return missing_required, missing_optional
 
 def extract_expected_data_types_from_mapping(mapping_file_path):
-    """
-    Extracts source column names and their expected data types from the mapping file.
+    """Extracts the expected data types for each column from the mapping file."""
+    with open(mapping_file_path, 'r') as file:
+        mapping_data = json.load(file)
 
-    Parameters:
-        - mapping_file_path (str): Path to the mapping file.
+    # Access the 'type' key directly from the root level of each item
+    expected_data_types = {
+        key: value['type']
+        for key, value in mapping_data.items()
+        if 'type' in value
+    }
+    return expected_data_types
+
+def cast_dataframe_to_expected_types(df, mapping_file_path):
+    """
+    Cast the DataFrame columns to the expected data types based on the mapping file.
+
+    Args:
+    - df (pandas.DataFrame): The input DataFrame with the Excel data.
+    - mapping_file_path (str): Path to the mapping JSON file.
 
     Returns:
-        - dict: Dictionary with column names as keys and expected data types as values.
+    - pandas.DataFrame: The DataFrame with columns casted to their respective types.
     """
-    with open(mapping_file_path, 'r') as f:
-        mapping_content = f.read()
+    with open(mapping_file_path, 'r') as file:
+        mapping_data = json.load(file)
 
-    # Parse the JSON content to extract source columns and their expected types
-    mapping_json = json.loads(mapping_content)
-    # Ensure 'validation' key exists and then extract the 'type'
-    return {field_info["column"]: field_info["validation"]["type"] for field_info in mapping_json.values() if "validation" in field_info}
+    # Extract the expected data types from the mapping data
+    expected_data_types = {key: value['type'] for key, value in mapping_data.items() if 'type' in value}
+
+    # Define a conversion dictionary for pandas data types
+    pandas_dtype_conversion = {
+        "string": "str",
+        "integer": "int64",
+        "float": "float64",
+        "boolean": "bool",
+        "datetime": "datetime64[ns]"
+    }
+
+    # Cast each column to its expected data type
+    for column, expected_dtype in expected_data_types.items():
+        if column in df.columns:
+            pandas_dtype = pandas_dtype_conversion.get(expected_dtype)
+            if pandas_dtype:
+                df[column] = df[column].astype(pandas_dtype)
+
+    return df
 
 def validate_excel_data_types_with_df(df, mapping_file_path):
     expected_data_types = extract_expected_data_types_from_mapping(mapping_file_path)
+
+    errors = []  # Initialize an empty list to collect errors
     for column, expected_dtype in expected_data_types.items():
         if column in df.columns:
             actual_dtype = df[column].dtype.name
             if actual_dtype == "object":
                 actual_dtype = "string"
             if actual_dtype != expected_dtype:
-                raise TypeError(f"Expected {column} to have dtype {expected_dtype}, but found {actual_dtype}.")
-    return True
+                errors.append(f"Expected {column} to have dtype {expected_dtype}, but found {actual_dtype}.")
+
+    return errors  # Return the list of errors
+
+
+
+
+
+
+
+
 
 def convert_data_types_according_to_updated_mapping(df, mapping_data):
     for field, config in mapping_data.items():
@@ -204,12 +245,7 @@ def validate_excel_file_columns(excel_columns, mapping_data, graphql_schema):
 
     return "Excel columns successfully validated against mapping file and GraphQL schema."
 
-def extract_expected_data_types_from_mapping(mapping_file_path):
-    """Extracts the expected data types of columns from the mapping file."""
-    with open(mapping_file_path, 'r') as f:
-        mapping_data = json.load(f)
-    expected_data_types = {key: value['validation']['type'] for key, value in mapping_data.items() if 'validation' in value}
-    return expected_data_types
+
 
 def process_excel_data_with_mapping(df, mapping_data):
     """

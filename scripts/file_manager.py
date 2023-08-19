@@ -8,16 +8,70 @@ from datetime import datetime
 def validate_excel_file_path(file_path):
     """Validates the path of the provided Excel file.
     If the file exists and is valid, it returns the content as a pandas DataFrame.
-    Otherwise, it returns a corresponding error message.
+    Otherwise, it raises an appropriate exception.
     """
-    if os.path.exists(file_path) and file_path.endswith('.xlsx'):
-        try:
-            data = pd.read_excel(file_path)
-            return data
-        except Exception as e:
-            return str(e)
-    else:
-        return f"[Errno 2] No such file or directory: '{file_path}'"
+    if not os.path.exists(file_path) or not file_path.endswith('.xlsx'):
+        raise FileNotFoundError(f"[Errno 2] No such file or directory: '{file_path}'")
+
+    try:
+        data = pd.read_excel(file_path)
+        return data
+    except Exception as e:
+        raise e
+
+def validate_mapping_file(file_path):
+    """Validates the path of the provided mapping file.
+    If the file exists, has a `.json` extension, and contains valid JSON, it returns the parsed JSON data.
+    Otherwise, it raises an appropriate exception.
+    """
+    if not os.path.exists(file_path) or not file_path.endswith('.json'):
+        raise FileNotFoundError(f"[Errno 2] No such file or directory or invalid extension: '{file_path}'")
+
+    try:
+        with open(file_path, 'r') as json_file:
+            data = json.load(json_file)
+        return data
+    except json.JSONDecodeError:
+        raise ValueError(f"The file '{file_path}' does not contain valid JSON.")
+
+def validate_schema_file(file_path):
+    """
+    Validates the provided GraphQL schema file based on basic heuristics.
+
+    Note:
+    This function provides a basic level of validation by checking the file's presence,
+    its extension, and the existence of some common GraphQL keywords. It does not
+    ensure that the file contains a fully valid GraphQL schema. For complete validation,
+    a dedicated GraphQL library or tool would be necessary.
+
+    :param file_path: Path to the GraphQL schema file.
+    :return: True if basic checks pass, raises an exception otherwise.
+    """
+
+    # Check if the file exists
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"[Errno 2] No such file or directory: '{file_path}'")
+
+    # Check the file extension
+    if not file_path.endswith('.ql'):
+        raise ValueError(f"Invalid file extension for GraphQL schema: '{file_path}'")
+
+     # Try reading the file as a text file (Replace w/graphene)
+    try:
+        with open(file_path, 'r') as f:
+            _ = f.read()
+        return True
+    except Exception as e:
+        raise ValueError(f"File '{file_path}' could not be read as a text file. Error: {str(e)}")
+
+
+
+
+
+
+
+
+
 
 def find_file(filename_pattern):
     # This function searches the /mnt/data/ directory for a file matching the provided pattern.

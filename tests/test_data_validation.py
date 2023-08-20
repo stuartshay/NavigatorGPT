@@ -5,13 +5,17 @@ import sys
 import logging
 import os
 
-sys.path.append('/home/vagrant/git/NavigatorGPT/scripts/')
+script_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.join(script_dir, '..', 'scripts'))
 
-from data_validation import validate_excel_data_types_with_df
-from data_validation import validate_excel_data_values_with_df
-from data_validation import extract_expected_data_types_from_mapping
-from data_validation import cast_dataframe_to_expected_types
 from file_manager import load_excel_data
+from data_validation import (
+    validate_excel_data_types_with_df,
+    validate_excel_data_values_with_df,
+    extract_expected_data_types_from_mapping,
+    validate_excel_data_values_with_df,
+    cast_dataframe_to_expected_types
+)
 
 # Set up the logger
 logging.basicConfig(filename='logs/test_log.log', level=logging.INFO)

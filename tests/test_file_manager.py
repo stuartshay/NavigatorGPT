@@ -2,9 +2,7 @@
 import unittest
 import pandas as pd
 import json
-import sys
 import logging
-sys.path.append('/home/vagrant/git/NavigatorGPT/scripts/')
 
 from file_manager import validate_excel_file_path
 from file_manager import validate_mapping_file

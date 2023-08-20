@@ -1,4 +1,5 @@
 import json
+import re
 import pandas as pd
 
 def get_mapping_data(mapping_file_path):
@@ -78,7 +79,9 @@ def cast_dataframe_to_expected_types(df, mapping_file_path):
 def validate_excel_data_types_with_df(df, mapping_file_path):
     expected_data_types = extract_expected_data_types_from_mapping(mapping_file_path)
 
-    errors = []  # Initialize an empty list to collect errors
+    # List to store errors
+    errors = []
+
     for column, expected_dtype in expected_data_types.items():
         if column in df.columns:
             actual_dtype = df[column].dtype.name
@@ -87,7 +90,50 @@ def validate_excel_data_types_with_df(df, mapping_file_path):
             if actual_dtype != expected_dtype:
                 errors.append(f"Expected {column} to have dtype {expected_dtype}, but found {actual_dtype}.")
 
-    return errors  # Return the list of errors
+    return errors
+
+def validate_excel_data_values_with_df(df, mapping_file_path):
+    mapping_data = get_mapping_data(mapping_file_path)
+    errors = []
+
+    for _, row in df.iterrows():
+        for column, mapping_value in mapping_data.items():
+            if column in row:
+                if 'validation' in mapping_value:
+                    validation_rules = mapping_value['validation']
+
+                    # Validate allowed values
+                    allowed_values = validation_rules.get('allowedValues', [])
+                    if allowed_values:
+                        if row[column] not in allowed_values:
+                            errors.append(f"Id {row['Id']} has invalid value {row[column]} in column {column}. Expected one of {allowed_values}.")
+
+                    # Validate minimum length
+                    min_length = validation_rules.get('minLength')
+                    if min_length:
+                        if len(str(row[column])) < min_length:
+                            errors.append(f"Id {row['Id']} has invalid value {row[column]} in column {column}. Length is less than minimum required length of {min_length}.")
+
+                    # Validate maximum length
+                    max_length = validation_rules.get('maxLength')
+                    if max_length:
+                        if len(str(row[column])) > max_length:
+                            errors.append(f"Id {row['Id']} has invalid value {row[column]} in column {column}. Length exceeds maximum allowed length of {max_length}.")
+
+                    # Validate using regex pattern
+                    pattern = validation_rules.get('pattern')
+                    if pattern:
+                        regex = re.compile(pattern)
+                        if not regex.match(str(row[column])):
+                            errors.append(f"Id {row['Id']} has invalid value {row[column]} in column {column}. Does not match the required pattern {pattern}.")
+
+    return errors
+
+
+
+
+
+
 
 
 

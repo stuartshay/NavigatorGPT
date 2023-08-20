@@ -3,18 +3,20 @@ import pandas as pd
 import json
 import sys
 import logging
+import os
+
 sys.path.append('/home/vagrant/git/NavigatorGPT/scripts/')
 
 from data_validation import validate_excel_data_types_with_df
+from data_validation import validate_excel_data_values_with_df
 from data_validation import extract_expected_data_types_from_mapping
 from data_validation import cast_dataframe_to_expected_types
-
-
 from file_manager import load_excel_data
 
 # Set up the logger
 logging.basicConfig(filename='logs/test_log.log', level=logging.INFO)
 logger = logging.getLogger()
+
 
 # Load test configuration
 with open("test_config.json", "r") as config_file:
@@ -23,8 +25,15 @@ with open("test_config.json", "r") as config_file:
 class TestDataValidation(unittest.TestCase):
 
     def setUp(self):
+
+        # Ensure the log file is empty before the test
+        if os.path.exists('data_validation_errors.log'):
+            os.remove('data_validation_errors.log')
+
         self.valid_excel_path = test_config_data["paths"]["excel_data"]
+        self.invalid_excel_path = test_config_data["paths"]["excel_validation_data"]
         self.mapping_file_path = test_config_data["paths"]["mapping_file"]
+
         self.df_valid = load_excel_data(self.valid_excel_path)
         with open(self.mapping_file_path, "r") as file:
             self.sample_mapping_data = json.load(file)
@@ -46,8 +55,6 @@ class TestDataValidation(unittest.TestCase):
             'Status': ['Active', 'Inactive']
         }
         self.df = pd.DataFrame(sample_data)
-
-        self.mapping_file_path = "mapping/attration.json"
 
     def test_extract_data_types(self):
         expected_data_types = {
@@ -89,6 +96,37 @@ class TestDataValidation(unittest.TestCase):
       if len(errors) > 0:
         for error in errors:
             print(error)
+
+    def test_validate_allowed_values(self):
+         # Load the Excel data
+        df_invalid_values = load_excel_data(self.invalid_excel_path)
+
+        # Validate allowed values
+        errors = validate_excel_data_values_with_df(df_invalid_values, self.mapping_file_path)
+
+        for error in errors:
+          logger.info(error)
+
+        self.assertEqual(len(errors), 15, "Expected 15 errors for invalid values, but found {}.".format(len(errors)))
+
+
+
+        # Load the Excel data
+        df_invalid = load_excel_data(self.invalid_excel_path)
+
+        # Cast the dataframe to the expected data types based on the mapping file
+        df_invalid = cast_dataframe_to_expected_types(df_invalid, self.mapping_file_path)
+
+
+        # Validate the data types
+        try:
+          errors = validate_excel_data_types_with_df(df_invalid, self.mapping_file_path)
+          if errors:
+            for error in errors:
+                logger.info(error)
+        except TypeError as e:
+           logger.info(f"Error: {e}")
+
 
 if __name__ == "__main__":
     unittest.main()

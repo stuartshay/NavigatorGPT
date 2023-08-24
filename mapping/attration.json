@@ -72,5 +72,44 @@
       "allowNull": true,
       "pattern": "^\\d{5}$"
     }
+  },
+  "Title": {
+    "column": "Title",
+    "includeInOutput": false,
+    "documentField": "title",
+    "isRequired": false,
+    "type": "string",
+    "required": false,
+    "validation": {
+      "length": {
+        "min": 1,
+        "max": 256
+      }
+    }
+  },
+  "Park": {
+    "column": "Park",
+    "documentField": "loc.park",
+    "isRequired": false,
+    "type": "string",
+    "required": false,
+    "validation": {
+      "length": {
+        "min": 5,
+        "max": 100
+      }
+    }
+  },
+  "ParkId": {
+    "column": "ParkId",
+    "type": "string",
+    "validation": {
+      "length": {
+        "min": 4,
+        "max": 6
+      }
+    },
+    "documentField": "loc.parkId",
+    "isRequired": false
   }
 }

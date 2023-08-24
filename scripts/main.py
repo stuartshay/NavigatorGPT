@@ -1,5 +1,12 @@
 
 import pandas as pd
+import logging
+import sys
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 from file_manager import (
     validate_excel_file_path,
     validate_mapping_file,
@@ -13,6 +20,8 @@ from file_manager import (
 from data_validation import (
     cast_dataframe_to_expected_types,
     validate_excel_data_types_with_df,
+    validate_excel_data_values_with_df,
+    handle_validation_errors,
     process_excel_data_with_mapping,
 )
 
@@ -32,19 +41,25 @@ def main():
     # 2. Load the Excel data
     df = load_excel_data(EXCEL_FILE_PATH)
 
-    # 3. Cast to the Correct Data Type
-    df = cast_dataframe_to_expected_types(df, MAPPING_FILE_PATH)
+    # 3. Validate data values based on allowed values, patterns etc.
+    data_value_validation_results = validate_excel_data_values_with_df(df, MAPPING_FILE_PATH)
 
-    # 4. Validate the Excel data types
+    # 4. Handle the validation errors
+    df = handle_validation_errors(df, data_value_validation_results)
+
+    # 5. Validate the Excel data types
     data_type_validation_results = validate_excel_data_types_with_df(df, MAPPING_FILE_PATH)
 
-    # 5. Process the Excel data with the mapping
+    # 6. Cast to the Correct Data Type
+    df = cast_dataframe_to_expected_types(df, MAPPING_FILE_PATH)
+
+    # 7. Process the Excel data with the mapping
     processed_data = process_excel_data_with_mapping(df, load_mapping_file(MAPPING_FILE_PATH))
 
-    # 6. Save the processed data to the template
+    # 8. Save the processed data to the template
     save_processed_data_to_template(processed_data, load_template_file(TEMPLATE_PATH), OUTPUT_JS_PATH)
 
-    # 7. Save the output array to a .js file
+    # 9. Save the output array to a .js file
     save_output_array_to_js_file(processed_data, OUTPUT_JS_PATH)
 
 if __name__ == "__main__":

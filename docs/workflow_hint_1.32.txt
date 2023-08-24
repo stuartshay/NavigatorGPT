@@ -26,14 +26,18 @@
 
 ## Excel File Validation:
 - Validate that all columns in the Excel file are defined in the mapping file.
-- Validate columns based on the "isRequired" flag in the mapping file (See Glossary).
-- Validate that all columns in the Excel file are defined as properties anywhere in the GraphQL schema.
-- Check if the Excel file has any extra columns not defined in the mapping file or GraphQL schema.
+- Check if the Excel file has any extra columns not defined in the mapping file.
+- For each column in the Excel file, validate its presence in the GraphQL schema. Ensure to account for case-insensitivity and any potential nested structures.
+- Validate columns based on the validation rule defined in the mapping file for each property.
+- Handle the Validation Errors
+
+## Transform or Enrich Data
 - Transform or Parse Excel Data into data types defined in the GraphQL schema and/or mapping file.
   - Example: PostalCode can be defined as integer in the Excel File. Convert the PostalCode to string as defined in the mapping file.
   - Emphasize the importance of data type transformations, especially when there are discrepancies between the Excel data and the GraphQL schema.
 - Ensure error messages are clear and specific. For instance, if there's a data type mismatch for a column, the error message should highlight this discrepancy.
 - It's essential to have a robust codebase that not only follows these instructions but is also capable of handling unexpected scenarios and providing feedback or error messages when discrepancies arise.
+
 
 ## Data Processing:
 - Process the data according to the mapping file.

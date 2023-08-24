@@ -1,6 +1,7 @@
 import json
 import re
 import pandas as pd
+import sys
 
 def get_mapping_data(mapping_file_path):
     """Reads the mapping file and returns its content as a dictionary.
@@ -129,6 +130,45 @@ def validate_excel_data_values_with_df(df, mapping_file_path):
 
     return errors
 
+def handle_validation_errors(df, validation_results):
+    """
+    Handle validation errors. If errors are found, the function provides the user with options:
+    1) Continue the workflow by excluding problematic records.
+    2) Stop the workflow and ask for resubmission.
+
+    Parameters:
+        df (pd.DataFrame): The dataframe containing the data.
+        validation_results (list): List of validation errors.
+
+    Returns:
+        pd.DataFrame: A cleaned dataframe (if the user chooses to continue).
+    """
+
+    if not validation_results:  # If there are no errors, just return the original dataframe.
+        return df
+
+    # Print out the errors
+    for error in validation_results:
+        print(error)
+
+    # Ask the user for their decision
+    decision = input("\nErrors detected. Would you like to:\n1) Continue the workflow without the problematic records\n2) Stop the workflow and fix the issues\nEnter your choice (1/2): ")
+
+    if decision == '1':
+        # Filter out the problematic records. For this, we're assuming the errors are in the format:
+        # "ID <some_id> has invalid value <some_value> in column <some_column>. Expected one of <some_allowed_values>."
+        # This can be adjusted based on the exact format of your error messages.
+        error_ids = [int(error.split(" ")[1]) for error in validation_results if "ID" in error]
+        df_clean = df[~df['Id'].isin(error_ids)]
+        return df_clean
+
+    elif decision == '2':
+        print("Please fix the issues in the Excel file and re-run the workflow.")
+        sys.exit()  # Stop the script.
+
+    else:
+        print("Invalid choice.")
+        sys.exit()  # Stop the script.
 
 
 

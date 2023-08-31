@@ -111,5 +111,43 @@
     },
     "documentField": "loc.parkId",
     "isRequired": false
+  },
+  "Dedicated": {
+    "column": "Dedicated",
+    "type": "string",
+    "documentField": "inventory.dedicated",
+    "isRequired": false,
+    "excludeIfEmptyOrNan": true
+  },
+  "Cast": {
+    "column": "Cast",
+    "type": "string",
+    "documentField": "inventory.castDate",
+    "isRequired": false,
+    "excludeIfEmptyOrNan": true
+  },
+  "Materials": {
+    "column": "Materials",
+    "type": "string",
+    "documentField": "inventory.materials",
+    "isRequired": false,
+    "nullValueReplacement": "",
+    "excludeIfEmptyOrNan": true
+  },
+  "Dimensions": {
+    "column": "Dimensions",
+    "type": "string",
+    "documentField": "inventory.dimensions",
+    "isRequired": false,
+    "nullValueReplacement": "",
+    "excludeIfEmptyOrNan": true
+  },
+  "Founder": {
+    "column": "Founder",
+    "type": "string",
+    "documentField": "inventory.founder",
+    "isRequired": false,
+    "nullValueReplacement": "",
+    "excludeIfEmptyOrNan": true
   }
 }

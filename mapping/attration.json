@@ -149,5 +149,29 @@
     "isRequired": false,
     "nullValueReplacement": "",
     "excludeIfEmptyOrNan": true
+  },
+  "LPNumber": {
+    "column": "LPNumber",
+    "type": "string",
+    "documentField": "landmark.lpNumber",
+    "isRequired": false,
+    "nullValueReplacement": "",
+    "excludeIfEmptyOrNan": true
+  },
+  "LandmarkType": {
+    "column": "LandmarkType",
+    "type": "string",
+    "documentField": "landmark.landmarkType",
+    "isRequired": false,
+    "nullValueReplacement": "",
+    "excludeIfEmptyOrNan": true
+  },
+  "DesignationDate": {
+    "column": "DesignationDate",
+    "type": "date",
+    "documentField": "landmark.designationDate",
+    "isRequired": false,
+    "nullValueReplacement": "",
+    "excludeIfEmptyOrNan": true
   }
 }

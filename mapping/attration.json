@@ -1,0 +1,185 @@
+{
+  "Id": {
+    "column": "Id",
+    "type": "string",
+    "validation": {
+      "pattern": "^[a-fA-F0-9]{24}$",
+      "isRequired": true
+    },
+    "documentField": "id",
+    "isRequired": true
+  },
+  "BoroughCode": {
+    "column": "BoroughCode",
+    "type": "string",
+    "validation": {
+      "allowedValues": [
+        "MN",
+        "BX",
+        "BK",
+        "QN",
+        "SI"
+      ]
+    },
+    "documentField": "loc.boroughCode",
+    "isRequired": false
+  },
+  "Borough": {
+    "column": "Borough",
+    "documentField": "loc.borough",
+    "isRequired": false,
+    "type": "string",
+    "validation": {
+      "allowedValues": [
+        "Manhattan",
+        "Bronx",
+        "Brooklyn",
+        "Queens",
+        "Staten Island"
+      ]
+    },
+    "dependency": {
+      "fieldName": "BoroughCode",
+      "mapping": {
+        "MN": "Manhattan",
+        "BX": "Bronx",
+        "BK": "Brooklyn",
+        "QN": "Queens",
+        "SI": "Staten Island"
+      }
+    }
+  },
+  "Neighborhood": {
+    "column": "Neighborhood",
+    "documentField": "loc.neighborhood",
+    "type": "string",
+    "isRequired": false
+  },
+  "City": {
+    "column": "City",
+    "documentField": "loc.city",
+    "type": "string",
+    "isRequired": false
+  },
+  "PostalCode": {
+    "column": "PostalCode",
+    "documentField": "loc.postalCode",
+    "isRequired": false,
+    "type": "string",
+    "validation": {
+      "minLength": 5,
+      "maxLength": 5,
+      "allowNull": true,
+      "pattern": "^\\d{5}$"
+    }
+  },
+  "Title": {
+    "column": "Title",
+    "includeInOutput": false,
+    "documentField": "title",
+    "isRequired": false,
+    "type": "string",
+    "required": false,
+    "validation": {
+      "length": {
+        "min": 1,
+        "max": 256
+      }
+    }
+  },
+  "Park": {
+    "column": "Park",
+    "documentField": "loc.park",
+    "isRequired": false,
+    "type": "string",
+    "required": false,
+    "validation": {
+      "length": {
+        "min": 5,
+        "max": 100
+      }
+    }
+  },
+  "ParkId": {
+    "column": "ParkId",
+    "type": "string",
+    "validation": {
+      "length": {
+        "min": 4,
+        "max": 6
+      }
+    },
+    "documentField": "loc.parkId",
+    "isRequired": false
+  },
+  "Dedicated": {
+    "column": "Dedicated",
+    "type": "string",
+    "documentField": "inventory.dedicated",
+    "isRequired": false,
+    "excludeIfEmptyOrNan": true
+  },
+  "Cast": {
+    "column": "Cast",
+    "type": "string",
+    "documentField": "inventory.castDate",
+    "isRequired": false,
+    "excludeIfEmptyOrNan": true
+  },
+  "Materials": {
+    "column": "Materials",
+    "type": "string",
+    "documentField": "inventory.materials",
+    "isRequired": false,
+    "nullValueReplacement": "",
+    "excludeIfEmptyOrNan": true
+  },
+  "Dimensions": {
+    "column": "Dimensions",
+    "type": "string",
+    "documentField": "inventory.dimensions",
+    "isRequired": false,
+    "nullValueReplacement": "",
+    "excludeIfEmptyOrNan": true
+  },
+  "Founder": {
+    "column": "Founder",
+    "type": "string",
+    "documentField": "inventory.founder",
+    "isRequired": false,
+    "nullValueReplacement": "",
+    "excludeIfEmptyOrNan": true
+  },
+  "LPNumber": {
+    "column": "LPNumber",
+    "type": "string",
+    "documentField": "landmark.lpNumber",
+    "isRequired": false,
+    "nullValueReplacement": "",
+    "excludeIfEmptyOrNan": true
+  },
+  "LandmarkType": {
+    "column": "LandmarkType",
+    "type": "string",
+    "documentField": "landmark.landmarkType",
+    "isRequired": false,
+    "nullValueReplacement": "",
+    "excludeIfEmptyOrNan": true
+  },
+  "DesignationDate": {
+    "column": "DesignationDate",
+    "type": "date",
+    "documentField": "landmark.designationDate",
+    "isRequired": false,
+    "nullValueReplacement": "",
+    "excludeIfEmptyOrNan": true
+  },
+  "BBL": {
+    "column": "BBL",
+    "type": "long",
+    "documentField": "loc.bbl",
+    "isRequired": false,
+    "nullValueReplacement": "",
+    "excludeIfEmptyOrNan": true
+  }
+}

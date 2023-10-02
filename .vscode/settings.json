@@ -1,6 +1,18 @@
 {
   "[python]": {
-    "editor.defaultFormatter": "ms-python.black-formatter"
+    "editor.defaultFormatter": "ms-python.autopep8",
+    "editor.formatOnSave": true
   },
-  "python.formatting.provider": "none"
+  "python.testing.unittestArgs": [
+    "-v",
+    "-s",
+    "./tests",
+    "-p",
+    "test_*.py"
+  ],
+  "python.testing.pytestEnabled": false,
+  "python.testing.unittestEnabled": true,
+
+  "python.autoComplete.extraPaths": ["./scripts"],
+  "python.analysis.extraPaths": ["./scripts"]
 }

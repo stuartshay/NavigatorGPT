@@ -23,12 +23,12 @@
 - Display row count in the Excel file.
 
 ## Excel File Validation:
-- Validate the data types of each column as specified.
-  - Example: Ensure PostalCode is a string, even if it looks like a number.
-- Validate against the GraphQL schema and the mapping file.
-- Note any special rules or transformations.
-  - Example: If PostalCode starts with '0', ensure it's retained.
-- Check for extra columns not defined in the mapping file or GraphQL schema.
+- Validate that all columns in the Excel file are defined in the mapping file..
+- Validate that all columns in the Excel file are defined as properties anywhere in the GraphQL schema.
+- Check if the Excel file has any extra columns not defined in the mapping file or GraphQL schema.
+- Transform or Parse Excel Data into data types define in the GraphQL schema and/or mapping file.
+  - Example: PostalCode can be defined as interger in the Excel File, Covert the PostalCode to string as defined in the GraphQL schema and mapping file.
+
 
 ## Data Processing:
 - Process the data according to the mapping file.

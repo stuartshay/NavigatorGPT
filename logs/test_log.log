@@ -1,0 +1,30 @@
+INFO:root:Id 550cd6d3610bf1c45d848950 has invalid value XX in column BoroughCode. Expected one of ['MN', 'BX', 'BK', 'QN', 'SI'].
+INFO:root:Id 550de70d610bf1c45d84899b has invalid value X1 in column BoroughCode. Expected one of ['MN', 'BX', 'BK', 'QN', 'SI'].
+INFO:root:Id 533cddb05c9596ef08143d7d has invalid value YZ in column BoroughCode. Expected one of ['MN', 'BX', 'BK', 'QN', 'SI'].
+INFO:root:Id 550cda5e610bf1c45d848956 has invalid value YZ in column BoroughCode. Expected one of ['MN', 'BX', 'BK', 'QN', 'SI'].
+INFO:root:Id 533cddb05c9596ef08143d8c has invalid value YZ in column BoroughCode. Expected one of ['MN', 'BX', 'BK', 'QN', 'SI'].
+INFO:root:Id 54ff9d0393a2b1e1e52db629 has invalid value 100AZ in column PostalCode. Does not match the required pattern ^\d{5}$.
+INFO:root:Id 533cddb15c9596ef08143d94 has invalid value 100AZ in column PostalCode. Does not match the required pattern ^\d{5}$.
+INFO:root:Id 54ffb04593a2b1e1e52db632 has invalid value 100AZ in column PostalCode. Does not match the required pattern ^\d{5}$.
+INFO:root:Id 533cddb15c9596ef08143da7 has invalid value 100AZ in column PostalCode. Does not match the required pattern ^\d{5}$.
+INFO:root:Id 533cddb15c9596ef08143da9 has invalid value 100AZ in column PostalCode. Does not match the required pattern ^\d{5}$.
+INFO:root:Id 54ffbd7193a2b1e1e52db636 has invalid value 100AZ in column PostalCode. Does not match the required pattern ^\d{5}$.
+INFO:root:Id 533cddb15c9596ef08143db1 has invalid value 100AZ in column PostalCode. Does not match the required pattern ^\d{5}$.
+INFO:root:Id 533cddb15c9596ef08143db3 has invalid value 100AZ in column PostalCode. Does not match the required pattern ^\d{5}$.
+INFO:root:Id 550e6249610bf1c45d8489ab has invalid value 100AZ in column PostalCode. Does not match the required pattern ^\d{5}$.
+INFO:root:Id 550632b193a2b1e1e52db6c1 has invalid value 100AZ in column PostalCode. Does not match the required pattern ^\d{5}$.
+INFO:root:Id 550cd6d3610bf1c45d848950 has invalid value XX in column BoroughCode. Expected one of ['MN', 'BX', 'BK', 'QN', 'SI'].
+INFO:root:Id 550de70d610bf1c45d84899b has invalid value X1 in column BoroughCode. Expected one of ['MN', 'BX', 'BK', 'QN', 'SI'].
+INFO:root:Id 533cddb05c9596ef08143d7d has invalid value YZ in column BoroughCode. Expected one of ['MN', 'BX', 'BK', 'QN', 'SI'].
+INFO:root:Id 550cda5e610bf1c45d848956 has invalid value YZ in column BoroughCode. Expected one of ['MN', 'BX', 'BK', 'QN', 'SI'].
+INFO:root:Id 533cddb05c9596ef08143d8c has invalid value YZ in column BoroughCode. Expected one of ['MN', 'BX', 'BK', 'QN', 'SI'].
+INFO:root:Id 54ff9d0393a2b1e1e52db629 has invalid value 100AZ in column PostalCode. Does not match the required pattern ^\d{5}$.
+INFO:root:Id 533cddb15c9596ef08143d94 has invalid value 100AZ in column PostalCode. Does not match the required pattern ^\d{5}$.
+INFO:root:Id 54ffb04593a2b1e1e52db632 has invalid value 100AZ in column PostalCode. Does not match the required pattern ^\d{5}$.
+INFO:root:Id 533cddb15c9596ef08143da7 has invalid value 100AZ in column PostalCode. Does not match the required pattern ^\d{5}$.
+INFO:root:Id 533cddb15c9596ef08143da9 has invalid value 100AZ in column PostalCode. Does not match the required pattern ^\d{5}$.
+INFO:root:Id 54ffbd7193a2b1e1e52db636 has invalid value 100AZ in column PostalCode. Does not match the required pattern ^\d{5}$.
+INFO:root:Id 533cddb15c9596ef08143db1 has invalid value 100AZ in column PostalCode. Does not match the required pattern ^\d{5}$.
+INFO:root:Id 533cddb15c9596ef08143db3 has invalid value 100AZ in column PostalCode. Does not match the required pattern ^\d{5}$.
+INFO:root:Id 550e6249610bf1c45d8489ab has invalid value 100AZ in column PostalCode. Does not match the required pattern ^\d{5}$.
+INFO:root:Id 550632b193a2b1e1e52db6c1 has invalid value 100AZ in column PostalCode. Does not match the required pattern ^\d{5}$.

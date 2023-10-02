@@ -1,0 +1,20 @@
+{
+    "paths": {
+        "excel_data": "data/test/Location-Import_Test.xlsx",
+        "excel_validation_data": "data/test/Location-Import-Test-Validation.xlsx",
+        "mapping_file": "mapping/attration.json",
+        "schema_file": "schemas/Attraction.ql",
+        "template_file": "templates/display-array.template",
+        "output_file": "data/test/processed/output_array_Test.js"
+    },
+    "settings": {
+        "validation": {
+            "check_data_types": true,
+            "check_missing_columns": true
+        },
+        "logging": {
+            "level": "INFO",
+            "log_file": "logs/test.log"
+        }
+    }
+}

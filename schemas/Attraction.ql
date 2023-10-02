@@ -32,6 +32,11 @@ type Attraction {
   inventory: Inventory
 
   """
+  Aliases - List of Alternative Names Titles
+  """
+  aliases: [String!]
+
+  """
   Photo - Main Photo
   """
   photo: Photo
@@ -107,9 +112,16 @@ type Loc {
   state: String
 
   """
-  PostalCode
+  PostalCode - 5 Character US Zip Code
+  Validation: ^\d{5}$
   """
   postalCode: String
+
+  """
+  Park - Park Name
+  """
+  park: String
+  parkId: String
 }
 
 """
@@ -152,9 +164,9 @@ Attraction Inventory
 """
 type Inventory {
   """
-  Sculptor
+  Sculptors
   """
-  sculptor: String
+  sculptors: [String!]
 
   """
   Artist
@@ -162,7 +174,7 @@ type Inventory {
   artist: String
 
   """
-  Architect
+  Architects
   """
   architects: [String!]
 

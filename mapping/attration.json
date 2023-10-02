@@ -173,5 +173,13 @@
     "isRequired": false,
     "nullValueReplacement": "",
     "excludeIfEmptyOrNan": true
+  },
+  "BBL": {
+    "column": "BBL",
+    "type": "long",
+    "documentField": "loc.bbl",
+    "isRequired": false,
+    "nullValueReplacement": "",
+    "excludeIfEmptyOrNan": true
   }
 }
